@@ -1,12 +1,13 @@
+
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-
+require('dotenv').config()
 const UserRoute = require('./routes/UserRoute');
 const UserAuthRoute = require('./routes/UserAuthRoute')
-
-mongoose.connect('mongodb+srv://tusar:tusar123@cluster0.bmnjk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', { userNewUrlParser: true, useUndefinedTopology: true });
+const mongoDbconnect = require('./mongoDbConnect');
+mongoose.connect(mongoDbconnect.mongoDbConnectString, { userNewUrlParser: true, useUndefinedTopology: true });
 
 const db = mongoose.connection
 
