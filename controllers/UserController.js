@@ -40,7 +40,7 @@ const store = (req, res, next) => {
         }
 
         let user = new User({
-            name: req.body.user,
+            name: req.body.name,
             email: req.body.email,
             phone: req.body.phone,
             dob: req.body.dob,

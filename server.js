@@ -2,29 +2,38 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config()
 const UserRoute = require('./routes/UserRoute');
 const UserAuthRoute = require('./routes/UserAuthRoute')
 const mongoDbconnect = require('./mongoDbConnect');
-mongoose.connect(mongoDbconnect.mongoDbConnectString, { userNewUrlParser: true, useUndefinedTopology: true });
+const AuthController = require('./controllers/AuthController');
+mongoose.connect(mongoDbconnect.mongoDbConnectString, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection
-
 db.on('error', err => {
-    console.log(err)
+     console.log(err)
 })
 
 db.once('open', () => {
     console.log("Database connection established!!")
 })
 
+
 const app = express()
 
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-
+// app.use(cors({
+//     'allowedHeaders': ['sessionId', 'Content-Type'],
+//     'exposedHeaders': ['sessionId'],
+//     'origin': '*',
+//     'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//     'preflightContinue': false
+// }));
+app.use(cors());
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
@@ -32,4 +41,7 @@ app.listen(PORT, () => {
 })
 
 app.use('/api/user', UserRoute)
-app.use('/api/auth', UserAuthRoute)
+ app.use('/api/auth', UserAuthRoute)
+// app.post('/api/auth/login',(req, res) => {
+//     AuthController.login(req,res);
+// });
