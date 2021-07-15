@@ -10,6 +10,9 @@ router.post('/login',(req, res) => {
 });
 
 
-router.post('/relogin', AuthController.reAuthenticate)
+router.post('/relogin', (req, res) => {
+    AuthController.reAuthenticate(req,res);
+}
+)
 
 module.exports = router

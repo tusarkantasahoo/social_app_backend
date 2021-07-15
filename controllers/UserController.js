@@ -34,7 +34,7 @@ const show = (req, res, next) => {
 const store = (req, res, next) => {
     bcrypt.hash(req.body.password, 10, function (err, hashedPass) {
         if (err) {
-            res.json({
+            res.send({
                 error: err
             })
         }
@@ -48,12 +48,13 @@ const store = (req, res, next) => {
         })
         user.save()
             .then(response => {
-                res.json({
-                    message: "User Added Successfully"
+                res.send({
+                    message: "User Added Successfully",
+                    code:"signupSuccessful"
                 })
             })
             .catch(error => {
-                res.json({
+                res.send({
                     message: 'An error Occured'
                 })
             })

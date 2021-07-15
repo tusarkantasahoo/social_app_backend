@@ -49,10 +49,10 @@ const login = (req, res) => {
   );
 };
 
-const reAuthenticate = (req, res, next) => {
+const reAuthenticate = (req, res) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
-    const username = req.body.username;
+    console.log("token",token)
     const decode = jwt.verify(token, "verySecreatvalue");
     console.log("decode val", decode);
     if (decode) {
@@ -66,7 +66,7 @@ const reAuthenticate = (req, res, next) => {
             phone: user.phone,
             dob: user.dob,
           };
-          res.json({
+          res.send({
             details: "reloggedin",
             message: "Relogin Successful",
             token: token,
@@ -79,7 +79,7 @@ const reAuthenticate = (req, res, next) => {
       
     }
   } catch (error) {
-    res.status(400).json({
+    res.send({
       details: "reloginFailed",
       message: "Token Invalid",
     });

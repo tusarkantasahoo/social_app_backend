@@ -26,13 +26,6 @@ const app = express()
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-// app.use(cors({
-//     'allowedHeaders': ['sessionId', 'Content-Type'],
-//     'exposedHeaders': ['sessionId'],
-//     'origin': '*',
-//     'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//     'preflightContinue': false
-// }));
 app.use(cors());
 const PORT = process.env.PORT || 5000;
 
@@ -42,6 +35,3 @@ app.listen(PORT, () => {
 
 app.use('/api/user', UserRoute)
  app.use('/api/auth', UserAuthRoute)
-// app.post('/api/auth/login',(req, res) => {
-//     AuthController.login(req,res);
-// });
