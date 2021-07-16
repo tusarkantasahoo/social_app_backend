@@ -15,4 +15,14 @@ router.post('/relogin', (req, res) => {
 }
 )
 
+router.post('/resetPasswordMail', (req, res) => {
+    AuthController.linkForForgotpassword(req,res);
+}
+)
+
+router.post('/updatePassword', (req, res) => {
+    AuthController.updatePassword(req, res);
+}
+)
+
 module.exports = router
