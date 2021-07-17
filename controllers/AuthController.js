@@ -58,6 +58,8 @@ const reAuthenticate = (req, res) => {
     if (decode) {
       var userData = {};
       User.findOne({ email: decode.username }).then((user) => {
+
+
         userData = {
           id: user.id,
           name: user.name,
@@ -141,9 +143,76 @@ const updatePassword = (req, res) => {
   });
 };
 
+const userLoginFromSocialSite = (req, res) => {
+  var userData = req.body;
+
+  console.log(userData);
+      User.findOne({ email: userData.email })
+        .then((user) => {
+          if(user!==null&&user!==undefined){
+
+            console.log("got user", user);
+            let token = jwt.sign({ username: userData.email }, "verySecreatvalue", {
+              expiresIn: "1hr",
+            });
+            res.send({
+              message: "Login successful",
+              token,
+              userData: {
+                name: userData.name,
+                email: userData.email,
+                phone: userData.phone,
+              },
+            });
+
+          }
+          else{
+            console.log("user not found creating user");
+            let newUser = new User({
+              name: userData.name,
+              email: userData.email,
+              phone: userData.phone,
+              userAddedFrom:userData.dataFrom
+
+          })
+
+          newUser.save()
+          .then(response => {
+            console.log("new user added from social site");
+            let token = jwt.sign({ username: userData.email }, "verySecreatvalue", {
+              expiresIn: "1hr",
+            });
+            res.send({
+              message: "Login successful",
+              token,
+              userData: {
+                name: userData.name,
+                email: userData.email,
+                phone: userData.phone,
+              },
+            });
+        })
+        .catch(error => {
+            res.send({
+                message: 'An error Occured'
+            })
+        })
+          }
+        })
+
+        .catch(e=>{console.log(e)})
+      }
+
+  
+
+
+
+
+
 module.exports = {
   login,
   reAuthenticate,
   linkForForgotpassword,
   updatePassword,
+  userLoginFromSocialSite
 };

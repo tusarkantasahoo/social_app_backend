@@ -24,5 +24,10 @@ router.post('/updatePassword', (req, res) => {
     AuthController.updatePassword(req, res);
 }
 )
+router.post('/userLoginFromSocialMediaSite', (req, res) => {
+    AuthController.userLoginFromSocialSite(req, res);
+}
+)
+
 
 module.exports = router
