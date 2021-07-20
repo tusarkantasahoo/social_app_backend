@@ -31,6 +31,7 @@ const login = (req, res) => {
                 email: user.email,
                 phone: user.phone,
                 dob: user.dob,
+                userImage:user.userImage
               },
             });
             console.log("Insoe login===", token);
@@ -58,7 +59,9 @@ const reAuthenticate = (req, res) => {
     if (decode) {
       var userData = {};
       User.findOne({ email: decode.username }).then((user) => {
-
+        let newToken = jwt.sign({ username: user.email }, "verySecreatvalue", {
+          expiresIn: 60 * 5 * 60,
+        });
 
         userData = {
           id: user.id,
@@ -66,11 +69,12 @@ const reAuthenticate = (req, res) => {
           email: user.email,
           phone: user.phone,
           dob: user.dob,
+          userImage:user.userImage
         };
         res.send({
           details: "reloggedin",
           message: "Relogin Successful",
-          token: token,
+          token: newToken,
           userData: userData,
         });
       });
@@ -159,9 +163,10 @@ const userLoginFromSocialSite = (req, res) => {
               message: "Login successful",
               token,
               userData: {
-                name: userData.name,
-                email: userData.email,
-                phone: userData.phone,
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                userImage:user.userImage
               },
             });
 
@@ -172,7 +177,8 @@ const userLoginFromSocialSite = (req, res) => {
               name: userData.name,
               email: userData.email,
               phone: userData.phone,
-              userAddedFrom:userData.dataFrom
+              userAddedFrom:userData.dataFrom ,
+              userImage:userData.image
 
           })
 
