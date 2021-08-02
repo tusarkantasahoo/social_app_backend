@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config()
 const UserRoute = require('./routes/UserRoute');
 const UserAuthRoute = require('./routes/UserAuthRoute')
+const SurveyRoute =  require('./routes/SurveyRoute');
 const mongoDbconnect = require('./mongoDbConnect');
 const AuthController = require('./controllers/AuthController');
 mongoose.connect(mongoDbconnect.mongoDbConnectString, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -34,4 +35,5 @@ app.listen(PORT, () => {
 })
 
 app.use('/api/user', UserRoute)
- app.use('/api/auth', UserAuthRoute)
+app.use('/api/auth', UserAuthRoute)
+app.use('/api/survey', SurveyRoute)
