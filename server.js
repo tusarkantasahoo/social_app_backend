@@ -8,6 +8,7 @@ require('dotenv').config()
 const UserRoute = require('./routes/UserRoute');
 const UserAuthRoute = require('./routes/UserAuthRoute')
 const SurveyRoute =  require('./routes/SurveyRoute');
+const SocialRoute = require('./routes/SocialRoute')
 const mongoDbconnect = require('./mongoDbConnect');
 const AuthController = require('./controllers/AuthController');
 mongoose.connect(mongoDbconnect.mongoDbConnectString, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -20,7 +21,6 @@ db.on('error', err => {
 db.once('open', () => {
     console.log("Database connection established!!")
 })
-
 
 const app = express()
 
@@ -37,3 +37,4 @@ app.listen(PORT, () => {
 app.use('/api/user', UserRoute)
 app.use('/api/auth', UserAuthRoute)
 app.use('/api/survey', SurveyRoute)
+app.use('/api/social', SocialRoute)

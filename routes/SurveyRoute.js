@@ -23,8 +23,13 @@ router.post('/pollAnswer/',(req, res) => {
 });
 
 router.post('/quizAnswer/',(req, res) => {
-    // SurveyController.createSurvey(req, res);
+     SurveyController.quizAnswer(req, res);
 });
+
+router.post('/researchAnswer/',(req, res) => {
+     SurveyController.researchAnswer(req, res);
+});
+
 
 
 router.post('/delete/',(req, res) => {
@@ -36,7 +41,7 @@ router.post('/delete/',(req, res) => {
 
 
 
-router.get('/all',(req, res) => {
+router.get('/all/',(req, res) => {
     SurveyController.index(req, res)
 });
 

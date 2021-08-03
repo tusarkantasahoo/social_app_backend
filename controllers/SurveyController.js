@@ -121,9 +121,126 @@ const pollAnswer = (req, res, next) => {
     });
 };
 
+const quizAnswer = (req, res, next) => {
+  var surveyId = req.body.surveyId;
+  var pollAnswer = req.body.pollAnswer;
+  var userName = req.body.userName;
+  var userId = req.body.userId;
+  var email = req.body.email;
+
+  SurveyModel.findById(surveyId)
+    .then((response) => {
+      // console.log(response);
+      var options = response.options;
+      for (var i = 0; i < options.length; i++) {
+        if (pollAnswer === options[i].title) {
+          options[i].response = options[i].response + 1;
+        }
+      }
+      console.log(options);
+
+      SurveyModel.findByIdAndUpdate(surveyId, { $set: { options: options } })
+        .then((response) => {
+          console.log("options updated successfully");
+          res.send({
+            details: "PollsUpdated",
+          });
+        })
+        .catch((error) => {
+          res.json({
+            message: "An error Occured",
+          });
+        });
+
+      SurveyModel.findByIdAndUpdate(surveyId, {
+        $push: {
+          userResponses: {
+            name: userName,
+            userId: userId,
+            email: email,
+            answer: pollAnswer,
+          },
+        },
+      })
+        .then((response) => {
+          console.log("details added successfully");
+        })
+        .catch((error) => {
+          res.json({
+            message: "An error Occured",
+          });
+        });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error Occured",
+      });
+    });
+};
+
+const researchAnswer = (req, res, next) => {
+  var surveyId = req.body.surveyId;
+  var pollAnswer = req.body.pollAnswer;
+  var userName = req.body.userName;
+  var userId = req.body.userId;
+  var email = req.body.email;
+
+  SurveyModel.findById(surveyId)
+    .then((response) => {
+      // console.log(response);
+      var options = response.options;
+      for (var i = 0; i < options.length; i++) {
+        if (pollAnswer === options[i].title) {
+          options[i].response = options[i].response + 1;
+        }
+      }
+      console.log(options);
+
+      SurveyModel.findByIdAndUpdate(surveyId, { $set: { options: options } })
+        .then((response) => {
+          console.log("options updated successfully");
+          res.send({
+            details: "PollsUpdated",
+          });
+        })
+        .catch((error) => {
+          res.json({
+            message: "An error Occured",
+          });
+        });
+
+      SurveyModel.findByIdAndUpdate(surveyId, {
+        $push: {
+          userResponses: {
+            name: userName,
+            userId: userId,
+            email: email,
+            answer: pollAnswer,
+          },
+        },
+      })
+        .then((response) => {
+          console.log("details added successfully");
+        })
+        .catch((error) => {
+          res.json({
+            message: "An error Occured",
+          });
+        });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error Occured",
+      });
+    });
+};
+
+
 module.exports = {
   index,
   createSurvey,
   addComment,
   pollAnswer,
+  quizAnswer,
+  researchAnswer
 };
