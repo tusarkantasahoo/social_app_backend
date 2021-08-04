@@ -10,9 +10,8 @@ const socialSchema = new Schema({
     comments:{type:Array},
     user: { type: Object },
     userResponses:{ type:Array },
-    imageB64:{ type: String },
-    filePath:{ type: String }
+    fileStorageId:{type:String}
 }, { timestamp: true })
 
-const SocialModel = mongoose.model('socialPosts', socialSchema)
-module.exports = SocialModel
+const SocialModelPosts = mongoose.model('socialPosts', socialSchema)
+module.exports = SocialModelPosts

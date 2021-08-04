@@ -3,7 +3,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
+var gridfs = require('gridfs-stream');
+var fs = require('fs');
 const bodyParser = require('body-parser');
+var multer = require('multer');
+var upload = multer();
 require('dotenv').config()
 const UserRoute = require('./routes/UserRoute');
 const UserAuthRoute = require('./routes/UserAuthRoute')
