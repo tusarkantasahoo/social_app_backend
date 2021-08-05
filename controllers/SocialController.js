@@ -58,6 +58,7 @@ const createPosts = (req, res, next) => {
     dislikes: 0,
     user: req.body.user,
     fileStorageId: req.body.fileStorageId,
+    videoLink:req.body.videoLink
   });
   post
     .save()

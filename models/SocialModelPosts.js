@@ -10,7 +10,8 @@ const socialSchema = new Schema({
     comments:{type:Array},
     user: { type: Object },
     userResponses:{ type:Array },
-    fileStorageId:{type:String}
+    fileStorageId:{type:String},
+    videoLink:{ type: String },
 }, { timestamp: true })
 
 const SocialModelPosts = mongoose.model('socialPosts', socialSchema)
