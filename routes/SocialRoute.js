@@ -31,6 +31,10 @@ router.post('/userResponse/',(req, res) => {
     // SocialController.addComment(req, res);
 });
 
+router.post('/delete/',(req, res) => {
+     SocialController.destroy(req, res);
+});
+
 
 
 

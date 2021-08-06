@@ -75,10 +75,27 @@ const createPosts = (req, res, next) => {
     });
 };
 
+const destroy = (req, res, next) => {
+  let postId = req.body.postId;
+  SocialModelPosts.findByIdAndRemove(postId)
+      .then(response => {
+          res.json({
+              message: "Post Deleted Successfully"
+          })
+      })
+      .catch(error => {
+          res.json({
+              message: 'An error Occured'
+          })
+      })
+}
+
+
 module.exports = {
   index,
   saveFilesInStorage,
   createPosts,
-  getFileById
+  getFileById,
+  destroy
 };
 
