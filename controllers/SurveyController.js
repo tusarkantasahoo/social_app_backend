@@ -9,7 +9,7 @@ const createSurvey = (req, res, next) => {
     surveyType: req.body.surveyType,
     options: req.body.options,
     duration: req.body.duration,
-    createdUser: req.body.createdUser,
+    user: req.body.user,
     answer: req.body.answer,
   });
   survey
