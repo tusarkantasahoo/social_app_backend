@@ -53,12 +53,12 @@ const createPosts = (req, res, next) => {
   let post = new SocialModelPosts({
     title: req.body.title,
     description: req.body.description,
-    postType:req.body.postType ,
+    postType: req.body.postType,
     likes: 0,
     dislikes: 0,
     user: req.body.user,
     fileStorageId: req.body.fileStorageId,
-    videoLink:req.body.videoLink
+    videoLink: req.body.videoLink,
   });
   post
     .save()
@@ -76,26 +76,52 @@ const createPosts = (req, res, next) => {
 };
 
 const destroy = (req, res, next) => {
-  let postId = req.body.postId;
-  SocialModelPosts.findByIdAndRemove(postId)
-      .then(response => {
-          res.json({
-              message: "Post Deleted Successfully"
+  // let postId = req.body.postId;
+  let postItem = req.body;
+  if (postItem.postType === "image" || postItem.postType === "video") {
+    SocialModelPosts.findByIdAndRemove(postItem._id)
+      .then((response) => {
+        SocialModelFiles.findByIdAndRemove(postItem.fileStorageId)
+          .then((response) => {
+            res.send({
+              message: "post deleted successfully",
+            });
           })
+          .catch((error) => {
+            res.send({
+              message: "An error Occured",
+            });
+          });
       })
-      .catch(error => {
-          res.json({
-              message: 'An error Occured'
-          })
-      })
-}
+      .catch((error) => {
+        res.send({
+          message: "An error Occured",
+        });
+      });
+  }
 
+
+  else{
+    SocialModelPosts.findByIdAndRemove(postItem._id)
+    .then((response) => {
+      res.send({
+        message: "post deleted successfully",
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error Occured",
+      });
+    });
+
+  }
+  console.log("body", req.body);
+};
 
 module.exports = {
   index,
   saveFilesInStorage,
   createPosts,
   getFileById,
-  destroy
+  destroy,
 };
-
