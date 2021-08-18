@@ -36,6 +36,10 @@ router.post('/delete/',(req, res) => {
     // SurveyController.createSurvey(req, res);
 });
 
+router.post('/getSurveyById/',(req, res) => {
+     SurveyController.getSurveyById(req, res);
+});
+
 
 
 
