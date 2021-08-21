@@ -251,6 +251,23 @@ const getSurveyById = (req, res, next) => {
     });
 };
 
+const getSurveyCreatedByUser = (req, res, next) => {
+  var userId = req.body;
+  SurveyModel.find( { user: userId } )
+    .then((response) => {
+      console.log(response);
+      res.send({
+        response
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error Occured",
+      });
+    });
+};
+
+
 
 module.exports = {
   index,
@@ -259,5 +276,6 @@ module.exports = {
   pollAnswer,
   quizAnswer,
   researchAnswer,
-  getSurveyById
+  getSurveyById,
+  getSurveyCreatedByUser
 };

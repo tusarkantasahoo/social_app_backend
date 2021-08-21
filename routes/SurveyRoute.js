@@ -40,6 +40,10 @@ router.post('/getSurveyById/',(req, res) => {
      SurveyController.getSurveyById(req, res);
 });
 
+router.post('/getSurveyCreatedByUser/',(req, res) => {
+     SurveyController.getSurveyCreatedByUser(req, res);
+});
+
 
 
 

@@ -8,7 +8,7 @@ const userSchema = new Schema({
     dob: { type: String },
     password: { type: String },
     userImage:{ type: String},
-    userAddedFrom:{ type: String}
+    userAddedFrom:{ type: String},
 }, { timestamp: true })
 
 const User = mongoose.model('UserFullData', userSchema)
