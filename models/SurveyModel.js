@@ -10,7 +10,8 @@ const surveySchema = new Schema({
     comments:{type:Array},
     user: { type: Object },
     answer:{type: String},
-    userResponses:{ type:Array }
+    userResponses:{ type:Array },
+    createdAt:{type:Date},
 }, { timestamp: true })
 
 const Survey = mongoose.model('surveyList', surveySchema)

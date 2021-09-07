@@ -117,6 +117,26 @@ const destroy = (req, res, next) => {
   }
   console.log("body", req.body);
 };
+const addComment = (req, res, next) => {
+  var postId = req.body.id;
+  var commentsObject = req.body.commentData;
+
+  SocialModelPosts.findByIdAndUpdate(postId, {
+    $push: {
+      comments: commentsObject,
+    },
+  })
+    .then((response) => {
+      res.json({
+        response,
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error Occured",
+      });
+    });
+};
 
 module.exports = {
   index,
@@ -124,4 +144,5 @@ module.exports = {
   createPosts,
   getFileById,
   destroy,
+  addComment
 };
