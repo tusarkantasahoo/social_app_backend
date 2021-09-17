@@ -138,11 +138,108 @@ const addComment = (req, res, next) => {
     });
 };
 
+const addCollegeFromExcel =(req,res,next)=>{
+
+  var XLSX = require('xlsx');
+  var workbook = XLSX.readFile('C:/Users/SADEPTA/Downloads/CollegesinIndia.xlsx');
+  var sheet_name_list = workbook.SheetNames;
+  const ws = workbook.Sheets['West Bengal'];
+           
+                console.log("Fetching seet data.....");
+                var data = XLSX.utils.sheet_to_json(ws);
+            
+                console.log("Data from excel", data);
+                if (data === null || data === undefined || data.length === 0) {
+                   
+                }
+                else{
+                  console.log(data);
+                  var collegeList = [];
+                  for(j=1;j<data.length;j++){
+                    collegeList.push({
+                      nameOfCollege:data[j].__EMPTY,
+                      address:data[j].__EMPTY_1,
+                      coursesfees :data[j].__EMPTY_10,
+                      cutoff:data[j].__EMPTY_11,
+                      admission:data[j].__EMPTY_12,
+                      examAccepted:data[j].__EMPTY_13,
+                      facilities:data[j].__EMPTY_14,
+                      placement:data[j].__EMPTY_15,
+                      reviewRating:data[j].__EMPTY_16,
+                      ranking:data[j].__EMPTY_17,
+                      comparision:data[j].__EMPTY_18,
+                      state:data[j].__EMPTY_3,
+                      sity:data[j].__EMPTY_4,
+                      afilliation:data[j].__EMPTY_5,
+                      type:data[j].__EMPTY_6,
+                      contact:data[j].__EMPTY_7,
+                      website:data[j].__EMPTY_8,
+                      email:data[j].__EMPTY_9
+                      
+
+
+                    })
+                  }
+                  res.send(collegeList)
+                }
+
+
+
+
+
+  // sheet_name_list.forEach(function(y) {
+  //     var worksheet = workbook.Sheets[y];
+  //     var headers = {};
+  //     var data = [];
+  //     for(z in worksheet) {
+  //         if(z[0] === '!') continue;
+  //         //parse out the column, row, and value
+  //         var tt = 0;
+  //         for (var i = 0; i < z.length; i++) {
+  //             if (!isNaN(z[i])) {
+  //                 tt = i;
+  //                 break;
+  //             }
+  //         };
+  //         var col = z.substring(0,tt);
+  //         var row = parseInt(z.substring(tt));      
+  //         var value = worksheet[z].v;
+  
+  //         //store header names
+  //         if(row == 1 && value) {
+  //             headers[col] = value;
+  //             continue;
+  //         }
+  
+  //         if(!data[row]) data[row]={};
+  //         data[row][headers[col]] = value;
+  //     }
+  //     //drop those first two rows which are empty
+  //     data.shift();
+  //     data.shift();
+      
+
+  //       // console.log(data)
+  //       res.send({
+  //         data:data
+  //       })
+  //       for(i=0;i<data.length;i++){
+  //         console.log("address",data[i].address);
+  //       }
+      
+      
+  
+
+  //   });
+  
+}
+
 module.exports = {
   index,
   saveFilesInStorage,
   createPosts,
   getFileById,
   destroy,
-  addComment
+  addComment,
+  addCollegeFromExcel
 };
