@@ -12,6 +12,10 @@ router.post('/filterbyTypeStateCity/',(req, res) => {
     AcademicsController.FilterClgByTypeStateCity(req, res)
 });
 
+router.post('/findCollegeById/',(req, res) => {
+    AcademicsController.getCollegeById(req, res);
+});
+
 
 
 

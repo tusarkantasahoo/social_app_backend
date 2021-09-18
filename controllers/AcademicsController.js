@@ -2,6 +2,21 @@ var multer = require("multer");
 var upload = multer();
 const AcademicsModel = require("../models/AcademicsModel");
 
+const getCollegeById = (req, res, next) => {
+  var id = req.body.id;
+  AcademicsModel.findById(id)
+    .then((response) => {
+      res.json({
+        response,
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error Occured",
+      });
+    });
+};
+
 const FilterClgByTypeStateCity = (req, res, next) => {
   var state = req.body.state;
   var city = req.body.city;
@@ -129,5 +144,6 @@ const addCollegeFromExcel = (req, res, next) => {
 
 module.exports = {
   addCollegeFromExcel,
-  FilterClgByTypeStateCity
+  FilterClgByTypeStateCity,
+  getCollegeById
 };
