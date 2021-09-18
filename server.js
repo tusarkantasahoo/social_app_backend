@@ -12,7 +12,8 @@ require('dotenv').config()
 const UserRoute = require('./routes/UserRoute');
 const UserAuthRoute = require('./routes/UserAuthRoute')
 const SurveyRoute =  require('./routes/SurveyRoute');
-const SocialRoute = require('./routes/SocialRoute')
+const SocialRoute = require('./routes/SocialRoute');
+const AcademicRoute = require('./routes/AcademicsRoutes');
 const mongoDbconnect = require('./mongoDbConnect');
 const AuthController = require('./controllers/AuthController');
 mongoose.connect(mongoDbconnect.mongoDbConnectString, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -42,3 +43,4 @@ app.use('/api/user', UserRoute)
 app.use('/api/auth', UserAuthRoute)
 app.use('/api/survey', SurveyRoute)
 app.use('/api/social', SocialRoute)
+app.use('/api/academics',AcademicRoute)
