@@ -44,6 +44,10 @@ router.post('/delete/',(req, res) => {
     // SurveyController.createSurvey(req, res);
 });
 
+router.post('/addCollegeFromExcel/',(req, res) => {
+    SocialController.addCollegeFromExcel(req, res);
+});
+
 
 
 

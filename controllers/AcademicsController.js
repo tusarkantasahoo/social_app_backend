@@ -2,6 +2,46 @@ var multer = require("multer");
 var upload = multer();
 const AcademicsModel = require("../models/AcademicsModel");
 
+const FilterClgByTypeStateCity = (req, res, next) => {
+  var state = req.body.state;
+  var city = req.body.city;
+  var query={state: state,city:city,academicType:req.body.academictype};
+  
+ 
+  if(req.body.state!="" && req.body.city=="" && req.body.academictype==""){
+    query={state: state};
+  }
+  if(req.body.state=="" && req.body.city!="" && req.body.academictype==""){
+    query={city:city} ;
+  }
+  if(req.body.state=="" && req.body.city=="" && req.body.academictype!=""){
+    query={academicType:req.body.academictype} ;
+  }
+
+  if(req.body.state!="" && req.body.city!="" && req.body.academictype==""){
+    query={state: state,city:city};
+  }
+  if(req.body.state=="" && req.body.city!="" && req.body.academictype!=""){
+    query={city:city,academicType:req.body.academictype} ;
+  }
+  if(req.body.state!="" && req.body.city=="" && req.body.academictype!=""){
+    query={academicType:req.body.academictype,state: state} ;
+  }
+
+
+  AcademicsModel.find(query)
+    .then((response) => {
+      res.json({
+        response,
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error Occured",
+      });
+    });
+};
+
 async function functionToInsertCollegeInInterval(postJson, i) {
   //run in 1 seconds
   console.log("Colle Ind",postJson)
@@ -80,13 +120,14 @@ const addCollegeFromExcel = (req, res, next) => {
     }
     res.send(collegeList);
 
-    for (var k = 0; k < collegeList.length; k++) {
-        // console.log("Inserting data",collegeList[k].nameOfCollege)
-        functionToInsertCollegeInInterval(collegeList[k], k);
-    }
+    // for (var k = 0; k < collegeList.length; k++) {
+    //     // console.log("Inserting data",collegeList[k].nameOfCollege)
+    //     functionToInsertCollegeInInterval(collegeList[k], k);
+    // }
   }
 };
 
 module.exports = {
   addCollegeFromExcel,
+  FilterClgByTypeStateCity
 };

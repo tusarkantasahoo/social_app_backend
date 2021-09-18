@@ -8,7 +8,9 @@ router.post('/addCollegeFromExcel/',(req, res) => {
     AcademicsController.addCollegeFromExcel(req, res);
 });
 
-
+router.post('/filterbyTypeStateCity/',(req, res) => {
+    AcademicsController.FilterClgByTypeStateCity(req, res)
+});
 
 
 
