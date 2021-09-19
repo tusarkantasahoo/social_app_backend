@@ -17,6 +17,14 @@ router.post('/findCollegeById/',(req, res) => {
 });
 
 
+router.post('/searchByAutoFiltr/',(req, res) => {
+    AcademicsController.AutoFilterCollege(req, res)
+});
+
+router.post('/searchByAutoFiltrSpeci/',(req, res) => {
+    AcademicsController.AutoFilterCollegeSpecilazation(req, res)
+});
+
 
 
 
