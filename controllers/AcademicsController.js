@@ -2,10 +2,65 @@ var multer = require("multer");
 var upload = multer();
 const AcademicsModel = require("../models/AcademicsModel");
 
+
+const  AutoFilterCollege = (req,res,next) =>{
+  console.log(req.body.term);
+ var regex=new RegExp(req.body.term,'i');
+ var collegeFilter = AcademicsModel.find({name:regex},{'name':1}).limit(20);
+var result=[];
+
+ collegeFilter.exec(function (err,data){
+
+  if(!err){
+    if(data && data.length && data.length>0){
+      data.forEach(college => {
+        let obj={
+          name : college.name,
+          id:college.name
+        }
+        result.push(obj);
+      })
+    }
+    res.json(result);
+  }
+ })
+
+}
+
+
+const  AutoFilterCollegeSpecilazation = (req,res,next) =>{
+
+ var regex=new RegExp(req.body.term,'i');
+ var collegeFilter = AcademicsModel.find({courseAndFees:regex},{'courseAndFees':1});
+var result=[];
+
+ collegeFilter.exec(function (err,data){
+
+  if(!err){
+    if(data && data.length && data.length>0){
+      data.forEach(college => {
+        let obj={
+          name : college.courseAndFees,
+          id:college.name
+        }
+        result.push(obj);
+      })
+    }
+    res.json(result);
+  }
+ })
+
+}
+
+
+
+
 const FilterClgByTypeStateCity = (req, res, next) => {
+
+  
   var state = req.body.state;
   var city = req.body.city;
-  var query={state: state,city:city,academicType:req.body.academictype};
+  var query={state: state,city:city,academicType:req.body.academictype}
   
  
   if(req.body.state!="" && req.body.city=="" && req.body.academictype==""){
@@ -29,17 +84,37 @@ const FilterClgByTypeStateCity = (req, res, next) => {
   }
 
 
-  AcademicsModel.find(query)
-    .then((response) => {
-      res.json({
-        response,
-      });
-    })
-    .catch((error) => {
-      res.json({
-        message: "An error Occured",
-      });
+  // var regex=new RegExp(req.body.specilaztion,'i');
+if(req.body.specilaztion!==null&&req.body.specilaztion!==undefined){
+  var regex=new RegExp(req.body.specilaztion,'i');
+  AcademicsModel.find(query).find({courseAndFees:regex},{'courseAndFees':1})
+  .then((response) => {
+    res.json({
+      response,
     });
+  })
+  .catch((error) => {
+    res.json({
+      message: "An error Occured",
+    });
+  });
+
+}
+else{
+  AcademicsModel.find(query)
+  .then((response) => {
+    res.json({
+      response,
+    });
+  })
+  .catch((error) => {
+    res.json({
+      message: "An error Occured",
+    });
+  });
+}
+ 
+ 
 };
 
 async function functionToInsertCollegeInInterval(postJson, i) {
@@ -50,9 +125,9 @@ async function functionToInsertCollegeInInterval(postJson, i) {
         academicType:"college",
         name: postJson.nameOfCollege,
         address:postJson.address,
-        description: postJson.description,
+        description: "",
         state: postJson.state,
-        city: postJson.city,
+        city: "",
         affiliation: postJson.affiliation,
         pinCode: "",
         collegeType: postJson.type,
@@ -85,7 +160,7 @@ const addCollegeFromExcel = (req, res, next) => {
   var XLSX = require("xlsx");
   var workbook = XLSX.readFile("CollegesinIndia.xlsx");
   var sheet_name_list = workbook.SheetNames;
-  const ws = workbook.Sheets["West Bengal"];
+  const ws = workbook.Sheets["Andhra Pradesh"];
 
   console.log("Fetching seet data.....");
   var data = XLSX.utils.sheet_to_json(ws);
@@ -97,28 +172,28 @@ const addCollegeFromExcel = (req, res, next) => {
     var collegeList = [];
     for (j = 1; j < data.length; j++) {
       collegeList.push({
-        nameOfCollege: data[j].__EMPTY,
-        address: data[j].__EMPTY_1,
-        coursesfees: data[j].__EMPTY_10,
-        cutoff: data[j].__EMPTY_11,
-        admission: data[j].__EMPTY_12,
-        examAccepted: data[j].__EMPTY_13,
-        facilities: data[j].__EMPTY_14,
-        placement: data[j].__EMPTY_15,
-        reviewRating: data[j].__EMPTY_16,
-        ranking: data[j].__EMPTY_17,
-        comparision: data[j].__EMPTY_18,
-        state: data[j].__EMPTY_3,
-        city: data[j].__EMPTY_4,
-        afilliation: data[j].__EMPTY_5,
-        type: data[j].__EMPTY_6,
-        contact: data[j].__EMPTY_7,
-        website: data[j].__EMPTY_8,
-        email: data[j].__EMPTY_9,
-        description:data[j].__EMPTY_2
+        nameOfCollege: data[j].NAME,
+        address: data[j].Address,
+        coursesfees: data[j].Fees,
+        cutoff: data[j].Cutoff,
+        admission: data[j].Admission,
+        examAccepted: data[j].ExamAccepted,
+        facilities: data[j].Facilities,
+        placement: data[j].Placement,
+        reviewRating: data[j].ReviewRating,
+        ranking: data[j].Ranking,
+        comparision: data[j].Comparision,
+        state: data[j].State,
+        // city: data[j].__EMPTY_4,
+        afilliation: data[j].Afilliation,
+        type: data[j].Type,
+        contact: data[j].Contact,
+        website: data[j].Website,
+        email: data[j].Email
+        // description:data[j].__EMPTY_2
       });
     }
-    res.send(collegeList);
+    res.send(data);
 
     // for (var k = 0; k < collegeList.length; k++) {
     //     // console.log("Inserting data",collegeList[k].nameOfCollege)
@@ -129,5 +204,7 @@ const addCollegeFromExcel = (req, res, next) => {
 
 module.exports = {
   addCollegeFromExcel,
-  FilterClgByTypeStateCity
+  FilterClgByTypeStateCity,
+  AutoFilterCollege,
+  AutoFilterCollegeSpecilazation
 };
