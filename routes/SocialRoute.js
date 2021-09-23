@@ -37,15 +37,11 @@ router.post('/delete/',(req, res) => {
 
 
 
-
-
-
-router.post('/delete/',(req, res) => {
-    // SurveyController.createSurvey(req, res);
+router.post('/addLike/',(req, res) => {
+    SocialController.addLike(req, res);
 });
-
-router.post('/addCollegeFromExcel/',(req, res) => {
-    SocialController.addCollegeFromExcel(req, res);
+router.post('/checkUserAlreadyLiked/',(req, res) => {
+    SocialController.checkUserLiked(req, res);
 });
 
 

@@ -30,7 +30,7 @@ var result=[];
       data.forEach(college => {
         let obj={
           name : college.name,
-          id:college.name
+          id:college.id
         }
         result.push(obj);
       })
@@ -74,36 +74,47 @@ const FilterClgByTypeStateCity = (req, res, next) => {
   
   var state = req.body.state;
   var city = req.body.city;
-  var query={state: state,city:city,academicType:req.body.academictype}
+  var query={academicType:req.body.academictype}
   
  
-  if(req.body.state!="" && req.body.city=="" && req.body.academictype==""){
-    query={state: state};
+  if(state!==null && state!==undefined&&city!==null&&city!==undefined) {
+    query.state = state;
+    query.city = city;
   }
-  if(req.body.state=="" && req.body.city!="" && req.body.academictype==""){
-    query={city:city} ;
+  else if(state!==null && state!==undefined) {
+    query.state = state;
   }
-  if(req.body.state=="" && req.body.city=="" && req.body.academictype!=""){
-    query={academicType:req.body.academictype} ;
-  }
-
-  if(req.body.state!="" && req.body.city!="" && req.body.academictype==""){
-    query={state: state,city:city};
-  }
-  if(req.body.state=="" && req.body.city!="" && req.body.academictype!=""){
-    query={city:city,academicType:req.body.academictype} ;
-  }
-  if(req.body.state!="" && req.body.city=="" && req.body.academictype!=""){
-    query={academicType:req.body.academictype,state: state} ;
+  else {
+    query = query
   }
 
+ if(req.body.affiliation!==null&&req.body.affiliation!==undefined&&req.body.specialization!==null&&req.body.specialization!==undefined){
+    console.log("==",req.body.affiliation)
+    var regexaff=new RegExp(req.body.affiliation,'i');
+    var regexSpec=new RegExp(req.body.specialization,'i');
+    AcademicsModel.find(query).find({affiliation:regexaff},{'affiliation':1}).find({courseAndFees:regexSpec},{'courseAndFees':1})
+    .then((response) => {
+      console.log(response)
+      res.send({
+        response,
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error Occured",
+      });
+    });
+  
+  }
 
   // var regex=new RegExp(req.body.specilaztion,'i');
-if(req.body.specilaztion!==null&&req.body.specilaztion!==undefined){
-  var regex=new RegExp(req.body.specilaztion,'i');
+if(req.body.specialization!==null&&req.body.specialization!==undefined){
+  console.log("==",req.body.specialization)
+  var regex=new RegExp(req.body.specialization,'i');
   AcademicsModel.find(query).find({courseAndFees:regex},{'courseAndFees':1})
   .then((response) => {
-    res.json({
+    console.log(response)
+    res.send({
       response,
     });
   })
@@ -114,6 +125,26 @@ if(req.body.specilaztion!==null&&req.body.specilaztion!==undefined){
   });
 
 }
+
+else if(req.body.affiliation!==null&&req.body.affiliation!==undefined){
+  console.log("==",req.body.affiliation)
+  var regex=new RegExp(req.body.affiliation,'i');
+  AcademicsModel.find(query).find({affiliation:regex},{'affiliation':1})
+  .then((response) => {
+    console.log(response)
+    res.send({
+      response,
+    });
+  })
+  .catch((error) => {
+    res.json({
+      message: "An error Occured",
+    });
+  });
+
+}
+
+
 else{
   AcademicsModel.find(query)
   .then((response) => {
@@ -199,7 +230,7 @@ const addCollegeFromExcel = (req, res, next) => {
         comparision: data[j].Comparision,
         state: data[j].State,
         // city: data[j].__EMPTY_4,
-        afilliation: data[j].Afilliation,
+        affilliation: data[j].Afilliation,
         type: data[j].Type,
         contact: data[j].Contact,
         website: data[j].Website,
