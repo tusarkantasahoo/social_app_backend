@@ -46,9 +46,6 @@ router.post('/getSurveyCreatedByUser/',(req, res) => {
 
 
 
-
-
-
 router.get('/all/',(req, res) => {
     SurveyController.index(req, res)
 });

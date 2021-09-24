@@ -205,7 +205,7 @@ const addCollegeFromExcel = (req, res, next) => {
   var XLSX = require("xlsx");
   var workbook = XLSX.readFile("CollegesinIndia.xlsx");
   var sheet_name_list = workbook.SheetNames;
-  const ws = workbook.Sheets["Andhra Pradesh"];
+  const ws = workbook.Sheets["West Bengal"];
 
   console.log("Fetching seet data.....");
   var data = XLSX.utils.sheet_to_json(ws);
@@ -217,33 +217,33 @@ const addCollegeFromExcel = (req, res, next) => {
     var collegeList = [];
     for (j = 1; j < data.length; j++) {
       collegeList.push({
-        nameOfCollege: data[j].NAME,
-        address: data[j].Address,
-        coursesfees: data[j].Fees,
-        cutoff: data[j].Cutoff,
-        admission: data[j].Admission,
-        examAccepted: data[j].ExamAccepted,
-        facilities: data[j].Facilities,
-        placement: data[j].Placement,
-        reviewRating: data[j].ReviewRating,
-        ranking: data[j].Ranking,
-        comparision: data[j].Comparision,
-        state: data[j].State,
-        // city: data[j].__EMPTY_4,
-        affilliation: data[j].Afilliation,
-        type: data[j].Type,
-        contact: data[j].Contact,
-        website: data[j].Website,
-        email: data[j].Email
-        // description:data[j].__EMPTY_2
+        nameOfCollege: data[j].__EMPTY,
+        address: data[j].__EMPTY_1,
+        coursesfees: data[j].__EMPTY_10,
+        cutoff: data[j].__EMPTY_11,
+        admission: data[j].__EMPTY_12,
+        examAccepted: data[j].__EMPTY_13,
+        facilities: data[j].__EMPTY_14,
+        placement: data[j].__EMPTY_15,
+        reviewRating: data[j].__EMPTY_16,
+        ranking: data[j].__EMPTY_17,
+        comparision: data[j].__EMPTY_18,
+        state: data[j].__EMPTY_3,
+         city: data[j].__EMPTY_4,
+        affiliation: data[j].__EMPTY_5,
+        type: data[j].__EMPTY_6,
+        contact: data[j].__EMPTY_7,
+        website: data[j].__EMPTY_8,
+        email: data[j].__EMPTY_9,
+        description:data[j].__EMPTY_2
       });
     }
-    res.send(data);
+    res.send(collegeList);
 
-    // for (var k = 0; k < collegeList.length; k++) {
-    //     // console.log("Inserting data",collegeList[k].nameOfCollege)
-    //     functionToInsertCollegeInInterval(collegeList[k], k);
-    // }
+    for (var k = 0; k < collegeList.length; k++) {
+        // console.log("Inserting data",collegeList[k].nameOfCollege)
+        functionToInsertCollegeInInterval(collegeList[k], k);
+    }
   }
 };
 
