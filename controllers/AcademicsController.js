@@ -71,7 +71,7 @@ var result=[];
 
 const FilterClgByTypeStateCity = (req, res, next) => {
 
-  
+  console.log(req.body)
   var state = req.body.state;
   var city = req.body.city;
   var query={academicType:req.body.academictype}
@@ -146,6 +146,7 @@ else if(req.body.affiliation!==null&&req.body.affiliation!==undefined){
 
 
 else{
+  console.log(query)
   AcademicsModel.find(query)
   .then((response) => {
     res.json({
@@ -170,9 +171,9 @@ async function functionToInsertCollegeInInterval(postJson, i) {
         academicType:"college",
         name: postJson.nameOfCollege,
         address:postJson.address,
-        description: "",
+        description: postJson.description,
         state: postJson.state,
-        city: "",
+        city: postJson.city,
         affiliation: postJson.affiliation,
         pinCode: "",
         collegeType: postJson.type,
