@@ -248,10 +248,26 @@ const addCollegeFromExcel = (req, res, next) => {
   }
 };
 
+
+const GetTopcolleges = (req, res, next) => {
+  AcademicsModel.find().limit(6)
+    .then((response) => {
+      res.json({
+        response,
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error Occured",
+      });
+    });
+};
+
 module.exports = {
   addCollegeFromExcel,
   FilterClgByTypeStateCity,
   getCollegeById,
   AutoFilterCollege,
-  AutoFilterCollegeSpecilazation
+  AutoFilterCollegeSpecilazation,
+  GetTopcolleges
 };

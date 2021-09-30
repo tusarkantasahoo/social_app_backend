@@ -44,6 +44,10 @@ router.post('/checkUserAlreadyLiked/',(req, res) => {
     SocialController.checkUserLiked(req, res);
 });
 
+router.post('/checkUserIdAvailable/',(req, res) => {
+    SocialController.checkMatchingid(req, res);
+});
+
 
 
 

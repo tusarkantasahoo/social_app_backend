@@ -49,6 +49,7 @@ const addComment = (req, res, next) => {
     $push: {
       comments: {
         comment: comments,
+        
       },
     },
   })
@@ -200,7 +201,8 @@ const researchAnswer = (req, res, next) => {
         message: "An error Occured",
       });
     });
-};
+
+}
 
 const getSurveyById = (req, res, next) => {
   var surveyId = req.body.id;
