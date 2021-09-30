@@ -178,7 +178,19 @@ const checkUserLiked = (req, res, next) => {
     });
 };
 
-
+const checkMatchingid=async(req, res, next)=>{
+  
+  
+  const result=await SocialModelPosts.find({ "user.id": req.body.userid,"_id":req.body.socialid } )
+  .then((response) => {
+    res.json({
+      response,
+    });
+  })
+  //const usercheck=result.find( ({ user }) => user === req.body.userid )
+  
+  console.log(result);
+}
 
 
 module.exports = {
@@ -189,5 +201,6 @@ module.exports = {
   destroy,
   addComment,
   addLike,
-  checkUserLiked
+  checkUserLiked,
+  checkMatchingid
 };

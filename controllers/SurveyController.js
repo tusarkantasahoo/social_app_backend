@@ -49,6 +49,7 @@ const addComment = (req, res, next) => {
     $push: {
       comments: {
         comment: comments,
+        
       },
     },
   })
@@ -121,7 +122,7 @@ const pollAnswer = (req, res, next) => {
     });
 };
 
-const quizAnswer = (req, res, next) => {
+const quizAnswer2 = (req, res, next) => {
   var surveyId = req.body.surveyId;
   var pollAnswer = req.body.pollAnswer;
   var userName = req.body.userName;
@@ -180,60 +181,32 @@ const quizAnswer = (req, res, next) => {
 
 const researchAnswer = (req, res, next) => {
   var surveyId = req.body.surveyId;
-  var pollAnswer = req.body.pollAnswer;
-  var userName = req.body.userName;
-  var userId = req.body.userId;
-  var email = req.body.email;
 
-  SurveyModel.findById(surveyId)
-    .then((response) => {
-      // console.log(response);
-      var options = response.options;
-      for (var i = 0; i < options.length; i++) {
-        if (pollAnswer === options[i].title) {
-          options[i].response = options[i].response + 1;
-        }
-      }
-      console.log(options);
 
-      SurveyModel.findByIdAndUpdate(surveyId, { $set: { options: options } })
-        .then((response) => {
-          console.log("options updated successfully");
-          res.send({
-            details: "PollsUpdated",
-          });
-        })
-        .catch((error) => {
-          res.json({
-            message: "An error Occured",
-          });
-        });
+  var dbData = {
+    comment:req.body.comment,
+    user:{
+      name:req.body.user.name,
+      email:req.body.user.email,
+      id:req.body.user.id
+    }
+  };
 
       SurveyModel.findByIdAndUpdate(surveyId, {
         $push: {
-          userResponses: {
-            name: userName,
-            userId: userId,
-            email: email,
-            answer: pollAnswer,
-          },
+          comments: dbData
         },
       })
         .then((response) => {
-          console.log("details added successfully");
+          res.json("details added successfully");
         })
         .catch((error) => {
           res.json({
             message: "An error Occured",
-          });
-        });
-    })
-    .catch((error) => {
-      res.json({
-        message: "An error Occured",
-      });
+
     });
-};
+});
+}
 
 
 const getSurveyById = (req, res, next) => {
@@ -268,14 +241,60 @@ const getSurveyCreatedByUser = (req, res, next) => {
 };
 
 
+const PollAnswer = (req, res, next) => {
+  var surveyId = req.body.surveyId;
+  optionName=req.body.optionName;
+  var dbData = {
+    comment:req.body.comment,
+    user:{
+      name:req.body.user.name,
+      email:req.body.user.email,
+      id:req.body.user.id
+    },
+  };
+      SurveyModel.findByIdAndUpdate(surveyId, {
+        $push: {
+          comments: dbData
+        },
+      })
+        .then((response) => {
+          var options = response.options;
+          console.log(options)
+          for (var i = 0; i < options.length; i++) {
+            if (optionName === options[i].name) {
+              options[i].vote = options[i].vote + 1;
+            }
+          }
+          SurveyModel.findByIdAndUpdate(surveyId, { $set: { options: options } })
+        .then((response) => {
+          console.log("options updated successfully");
+          res.send({
+            details: "PollsUpdated",
+          });
+        })
+        .catch((error) => {
+          res.json({
+            message: "An error Occured",
+          });
+        });
+          
+        })
+        .catch((error) => {
+          res.json({
+            message: error,
+    });
+});
+}
+
 
 module.exports = {
   index,
   createSurvey,
   addComment,
   pollAnswer,
-  quizAnswer,
+  quizAnswer2,
   researchAnswer,
   getSurveyById,
-  getSurveyCreatedByUser
+  getSurveyCreatedByUser,
+  
 };
