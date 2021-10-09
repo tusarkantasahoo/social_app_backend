@@ -7,7 +7,8 @@ const academicspostSchema = new Schema({
     addedBy: { type: String },
    collegename:{type:String},
    description:{type:String},
-   collegeId:{type:String}
+   collegeId:{type:String},
+   title:{type:String} 
 
     
 }, { timestamp: true })

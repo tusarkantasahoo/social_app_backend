@@ -75,7 +75,7 @@ const reAuthenticate = (req, res) => {
           details: "reloggedin",
           message: "Relogin Successful",
           token: newToken,
-          userData: userData,
+          userData: user,
         });
       });
     }
@@ -162,12 +162,8 @@ const userLoginFromSocialSite = (req, res) => {
             res.send({
               message: "Login successful",
               token,
-              userData: {
-                name: user.name,
-                email: user.email,
-                phone: user.phone,
-                userImage:user.userImage
-              },
+              userData: user
+
             });
 
           }
@@ -191,11 +187,7 @@ const userLoginFromSocialSite = (req, res) => {
             res.send({
               message: "Login successful",
               token,
-              userData: {
-                name: userData.name,
-                email: userData.email,
-                phone: userData.phone,
-              },
+              userData: userData
             });
         })
         .catch(error => {

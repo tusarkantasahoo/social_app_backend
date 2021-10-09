@@ -25,6 +25,10 @@ router.post('/searchByAutoFiltrSpeci/',(req, res) => {
     AcademicsController.AutoFilterCollegeSpecilazation(req, res)
 });
 
+router.post('/gettopcolleges/',(req, res) => {
+    AcademicsController.GetTopcolleges(req, res)
+});
+
 
 
 
