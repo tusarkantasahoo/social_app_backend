@@ -17,6 +17,7 @@ const AcademicRoute = require('./routes/AcademicsRoutes');
 const AcademicspostRoute = require('./routes/AcademicspostRoute');
 const mongoDbconnect = require('./mongoDbConnect');
 const AuthController = require('./controllers/AuthController');
+const QuizRoute = require('./routes/QuizRoute');
 mongoose.connect(mongoDbconnect.mongoDbConnectString, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection
@@ -46,3 +47,4 @@ app.use('/api/survey', SurveyRoute)
 app.use('/api/social', SocialRoute)
 app.use('/api/academics',AcademicRoute)
 app.use('/api/Academicspost',AcademicspostRoute)
+app.use('/api/quiz',QuizRoute)
