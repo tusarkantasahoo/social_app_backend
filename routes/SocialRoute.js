@@ -11,6 +11,11 @@ router.get('/all/',(req, res) => {
     SocialController.index(req, res)
 });
 
+router.post('/getPostByPage/',(req, res) => {
+    SocialController.getPostByPage(req, res)
+});
+
+
 router.post('/saveFiles/',upload.array('profileImg'),(req, res) => {
     SocialController.saveFilesInStorage(req, res);
 });

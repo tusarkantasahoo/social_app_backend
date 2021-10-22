@@ -16,6 +16,22 @@ const index = (req, res, next) => {
     });
 };
 
+const getPostByPage = (req, res, next) => {
+  var pageNo = req.body.pageNo;
+  SocialModelPosts.find().sort({"_id":-1}).skip(2*pageNo)
+  .limit(2)
+    .then((response) => {
+      res.json({
+        response,
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error Occured",
+      });
+    });
+};
+
 const getFileById = (req, res, next) => {
   var fileId = req.body.id;
   SocialModelFiles.findById(fileId)
@@ -202,5 +218,6 @@ module.exports = {
   addComment,
   addLike,
   checkUserLiked,
-  checkMatchingid
+  checkMatchingid,
+  getPostByPage
 };
