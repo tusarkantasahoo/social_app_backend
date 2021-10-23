@@ -18,8 +18,8 @@ const index = (req, res, next) => {
 
 const getPostByPage = (req, res, next) => {
   var pageNo = req.body.pageNo;
-  SocialModelPosts.find().sort({"_id":-1}).skip(2*pageNo)
-  .limit(2)
+  SocialModelPosts.find().sort({"_id":-1}).skip(4*pageNo)
+  .limit(4)
     .then((response) => {
       res.json({
         response,
@@ -157,10 +157,11 @@ const addComment = (req, res, next) => {
 const addLike = (req, res, next) => {
   var postId = req.body.id;
   var userId = req.body.userId;
+  var data = req.body.data;
 
   SocialModelPosts.findByIdAndUpdate(postId, {
     $push: {
-      userResponses: userId,
+      userResponses: {id:userId,response:data},
     },
     $inc:{
       likes:1
@@ -177,7 +178,29 @@ const addLike = (req, res, next) => {
       });
     });
 };
-
+const addDislike = (req, res, next) => {
+  var postId = req.body.id;
+  var userId = req.body.userId;
+  var data = req.body.data;
+  SocialModelPosts.findByIdAndUpdate(postId, {
+    $push: {
+      userResponses: {id:userId,response:data},
+    },
+    $inc:{
+      dislikes:1
+    }
+  })
+    .then((response) => {
+      res.json({
+        response,
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error Occured",
+      });
+    });
+};
 const checkUserLiked = (req, res, next) => {
   var userId = req.body.userId;
 
@@ -219,5 +242,6 @@ module.exports = {
   addLike,
   checkUserLiked,
   checkMatchingid,
-  getPostByPage
+  getPostByPage,
+  addDislike
 };

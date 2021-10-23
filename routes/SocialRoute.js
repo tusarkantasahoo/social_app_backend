@@ -45,6 +45,11 @@ router.post('/delete/',(req, res) => {
 router.post('/addLike/',(req, res) => {
     SocialController.addLike(req, res);
 });
+
+router.post('/addDislike/',(req, res) => {
+    SocialController.addDislike(req, res);
+});
+
 router.post('/checkUserAlreadyLiked/',(req, res) => {
     SocialController.checkUserLiked(req, res);
 });

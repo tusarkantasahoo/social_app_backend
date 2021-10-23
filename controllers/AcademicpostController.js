@@ -34,12 +34,7 @@ const createPosts = (req, res, next) => {
   
     const result=await AcademicspostModel.find({ "collegeId": req.body.collegeid } )
     .then((response) => {
-      var data={
-          image:response[0].image,
-          id:response[0]._id,
-          description:response[0].description,
-          collegename:response[0].collegename,
-      }
+ 
       res.send({response});
     })
   }

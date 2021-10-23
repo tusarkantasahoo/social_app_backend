@@ -28,6 +28,10 @@ router.post('/gettopcolleges/',(req, res) => {
     AcademicsController.GetTopcolleges(req, res)
 });
 
+router.post('/gettopcolleges/',(req, res) => {
+    AcademicsController.GetTopcolleges(req, res)
+});
+
 
 
 

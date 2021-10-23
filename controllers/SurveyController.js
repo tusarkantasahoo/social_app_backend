@@ -3,28 +3,76 @@ const SurveyModel = require("../models/SurveyModel");
 //create poll survey
 
 const createSurvey = (req, res, next) => {
-  let survey = new SurveyModel({
-    title: req.body.title,
-    question: req.body.question,
-    surveyType: req.body.surveyType,
-    options: req.body.options,
-    duration: req.body.duration,
-    user: req.body.user,
-    answer: req.body.answer,
-  });
-  survey
-    .save()
-    .then((response) => {
-      res.send({
-        message: "Survey created Successfully",
-        code: "survey_create_success",
-      });
-    })
-    .catch((error) => {
-      res.send({
-        message: "An error Occured",
-      });
+
+  var surveyType= req.body.surveyType;
+  if(surveyType==="poll"){
+    let survey = new SurveyModel({
+      title: req.body.title,
+      question: req.body.question,
+      surveyType: req.body.surveyType,
+      options: req.body.options,
+      duration: req.body.duration,
+      user: req.body.user,
     });
+    survey
+      .save()
+      .then((response) => {
+        res.send({
+          message: "Survey created Successfully",
+          code: "survey_create_success",
+        });
+      })
+      .catch((error) => {
+        res.send({
+          message: "An error Occured",
+        });
+      });
+  
+  }
+  else if(surveyType === "quiz"){
+    let survey = new SurveyModel({
+      title: req.body.title,
+      quizQuestion: req.body.question,
+      surveyType: req.body.surveyType,
+      user: req.body.user,
+    });
+    survey
+      .save()
+      .then((response) => {
+        res.send({
+          message: "Survey created Successfully",
+          code: "survey_create_success",
+        });
+      })
+      .catch((error) => {
+        res.send({
+          message: "An error Occured",
+        });
+      });
+  }
+
+  else if(surveyType === "research"){
+    let survey = new SurveyModel({
+      title: req.body.title,
+      researchQuestion: req.body.question,
+      surveyType: req.body.surveyType,
+      user: req.body.user,
+    });
+    survey
+      .save()
+      .then((response) => {
+        res.send({
+          message: "Survey created Successfully",
+          code: "survey_create_success",
+        });
+      })
+      .catch((error) => {
+        res.send({
+          message: "An error Occured",
+        });
+      });
+  }
+
 };
 
 const index = (req, res, next) => {

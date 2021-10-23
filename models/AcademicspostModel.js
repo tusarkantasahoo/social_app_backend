@@ -9,8 +9,6 @@ const academicspostSchema = new Schema({
    description:{type:String},
    collegeId:{type:String},
    title:{type:String}
-
-    
 }, { timestamp: true })
 
 const Academicspost = mongoose.model('academicspost', academicspostSchema)
