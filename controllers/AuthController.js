@@ -7,15 +7,17 @@ const mailSend = require("./SecreatsFormail");
 const login = (req, res) => {
   var username = req.body.username;
   var password = req.body.password;
-
+  console.log(username, password);
   User.findOne({ $or: [{ email: username }, { phone: username }] }).then(
     (user) => {
       if (user) {
+        console.log(user)
         bcrypt.compare(password, user.password, function (err, result) {
           if (err) {
-            res.json({
-              error: err,
-            });
+            // res.send({
+            //   error: err,
+            // });
+            console.log(err)
           }
 
           if (result) {
@@ -36,7 +38,7 @@ const login = (req, res) => {
             });
             console.log("Insoe login===", token);
           } else {
-            res.json({
+            res.send({
               message: "password not match",
             });
           }

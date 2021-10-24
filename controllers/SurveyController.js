@@ -170,34 +170,14 @@ const pollAnswer = (req, res, next) => {
 };
 
 const quizAnswer = (req, res, next) => {
-  console.log("Poll ans called");
+  // console.log("Poll ans called");
   var surveyId = req.body.surveyId;
-  optionName = req.body.optionName;
-  var dbData = {
-    option: optionName,
-    user: {
-      name: req.body.user.name,
-      email: req.body.user.email,
-      id: req.body.user.id,
-    },
-  };
+  var userResponse = req.body;
   SurveyModel.findById(surveyId)
     .then((response) => {
-      var options = response.options;
-      console.log(options);
-      for (var i = 0; i < options.length; i++) {
-        if (optionName === options[i].name) {
-          options[i].vote = options[i].vote + 1;
-        }
-      }
-      SurveyModel.findByIdAndUpdate(
-        surveyId,
-        { $set: { options: options } },
-      )
-        .then((response) => {
           SurveyModel.findByIdAndUpdate(surveyId, {
             $push: {
-              userResponses: dbData,
+              userResponses: userResponse,
             },
           })
             .then((response) => {
@@ -211,12 +191,7 @@ const quizAnswer = (req, res, next) => {
                 message: "An error Occured",
               });
             });
-        })
-        .catch((error) => {
-          res.json({
-            message: "An error Occured",
-          });
-        });
+  
     })
     .catch((error) => {
       res.json({

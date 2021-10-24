@@ -32,7 +32,7 @@ const show = (req, res, next) => {
 
 
 const store = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10, function (err, hashedPass) {
+    bcrypt.hash(req.body.password, 12, function (err, hashedPass) {
         if (err) {
             res.send({
                 error: err

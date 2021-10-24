@@ -23,7 +23,7 @@ router.post('/pollAnswer/',(req, res) => {
 });
 
 router.post('/quizAnswer/',(req, res) => {
-     SurveyController.QuizAnswer(req, res);
+     SurveyController.quizAnswer(req, res);
 });
 
 router.post('/researchAnswer/',(req, res) => {
