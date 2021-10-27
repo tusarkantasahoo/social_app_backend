@@ -14,6 +14,9 @@ router.get('/all/',(req, res) => {
 router.post('/getPostByPage/',(req, res) => {
     SocialController.getPostByPage(req, res)
 });
+router.post('/getPostById/',(req, res) => {
+    SocialController.getPostById(req, res)
+});
 
 
 router.post('/saveFiles/',upload.array('profileImg'),(req, res) => {
@@ -50,12 +53,16 @@ router.post('/addDislike/',(req, res) => {
     SocialController.addDislike(req, res);
 });
 
-router.post('/checkUserAlreadyLiked/',(req, res) => {
-    SocialController.checkUserLiked(req, res);
+router.post('/checkUserAlreadyLikedOrDisliked/',(req, res) => {
+    SocialController.checkUserLikedOrDisliked(req, res);
 });
 
 router.post('/checkUserIdAvailable/',(req, res) => {
-    SocialController.checkMatchingid(req, res);
+    // SocialController.checkMatchingid(req, res);
+});
+
+router.post('/getPostForUser/',(req, res) => {
+     SocialController.userCreatedPosts(req, res);
 });
 
 

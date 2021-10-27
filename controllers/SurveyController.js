@@ -243,8 +243,8 @@ const getSurveyById = (req, res, next) => {
 };
 
 const getSurveyCreatedByUser = (req, res, next) => {
-  var userId = req.body;
-  SurveyModel.find({ user: userId })
+  var userId = req.body.userId;
+  SurveyModel.find({ "user._id": userId })
     .then((response) => {
       console.log(response);
       res.send({

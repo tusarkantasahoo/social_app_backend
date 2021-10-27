@@ -16,10 +16,42 @@ const index = (req, res, next) => {
     });
 };
 
+const userCreatedPosts = (req, res, next) => {
+  var userId = req.body.userId;
+  SocialModelPosts.find({"user._id":userId})
+    .then((response) => {
+      res.json({
+        response,
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error Occured",
+      });
+    });
+};
+
+
+const getPostById = (req, res, next) => {
+  var postId = req.body.postId;
+  SocialModelPosts.findById(postId)
+    .then((response) => {
+      res.send({
+        response,
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error Occured",
+      });
+    });
+};
 const getPostByPage = (req, res, next) => {
   var pageNo = req.body.pageNo;
-  SocialModelPosts.find().sort({"_id":-1}).skip(4*pageNo)
-  .limit(4)
+  SocialModelPosts.find()
+    .sort({ _id: -1 })
+    .skip(4 * pageNo)
+    .limit(4)
     .then((response) => {
       res.json({
         response,
@@ -114,22 +146,18 @@ const destroy = (req, res, next) => {
           message: "An error Occured",
         });
       });
-  }
-
-
-  else{
+  } else {
     SocialModelPosts.findByIdAndRemove(postItem._id)
-    .then((response) => {
-      res.send({
-        message: "post deleted successfully",
+      .then((response) => {
+        res.send({
+          message: "post deleted successfully",
+        });
+      })
+      .catch((error) => {
+        res.json({
+          message: "An error Occured",
+        });
       });
-    })
-    .catch((error) => {
-      res.json({
-        message: "An error Occured",
-      });
-    });
-
   }
   console.log("body", req.body);
 };
@@ -158,14 +186,14 @@ const addLike = (req, res, next) => {
   var postId = req.body.id;
   var userId = req.body.userId;
   var data = req.body.data;
-
+  console.log(userId)
   SocialModelPosts.findByIdAndUpdate(postId, {
     $push: {
-      userResponses: {id:userId,response:data},
+      userResponses: { id: userId, response: data },
     },
-    $inc:{
-      likes:1
-    }
+    $inc: {
+      likes: 1,
+    },
   })
     .then((response) => {
       res.json({
@@ -184,11 +212,11 @@ const addDislike = (req, res, next) => {
   var data = req.body.data;
   SocialModelPosts.findByIdAndUpdate(postId, {
     $push: {
-      userResponses: {id:userId,response:data},
+      userResponses: { id: userId, response: data },
     },
-    $inc:{
-      dislikes:1
-    }
+    $inc: {
+      dislikes: 1,
+    },
   })
     .then((response) => {
       res.json({
@@ -201,14 +229,46 @@ const addDislike = (req, res, next) => {
       });
     });
 };
-const checkUserLiked = (req, res, next) => {
+
+const checkUserLikedOrDisliked = async (req, res, next) => {
+  var postId = req.body.postId;
   var userId = req.body.userId;
-
-  SocialModelPosts.find({userResponses: userId})
+  var likeObj = {
+    id: userId,
+    response: "like",
+  };
+  console.log(likeObj);
+  var dislikeObj = {
+    id: userId,
+    response: "dislike",
+  };
+  SocialModelPosts.find(
+    { _id: postId },
+    { userResponses: { $elemMatch: likeObj } }
+  )
     .then((response) => {
-      res.json({
-        response,
-      });
+      if (response[0].userResponses.length === 0) {
+        SocialModelPosts.find(
+          { _id: postId },
+          { userResponses: { $elemMatch: dislikeObj } }
+        )
+          .then((result) => {
+            if (result[0].userResponses.length === 0) {
+              res.send({ userResponse: "notdone" });
+            } else {
+              res.send({ userResponse: "dislike" });
+            }
+          })
+          .catch((error) => {
+            res.json({
+              message: "An error Occured",
+            });
+          });
+      } else {
+        res.send({
+          userResponse: "like",
+        });
+      }
     })
     .catch((error) => {
       res.json({
@@ -216,21 +276,6 @@ const checkUserLiked = (req, res, next) => {
       });
     });
 };
-
-const checkMatchingid=async(req, res, next)=>{
-  
-  
-  const result=await SocialModelPosts.find({ "user.id": req.body.userid,"_id":req.body.socialid } )
-  .then((response) => {
-    res.json({
-      response,
-    });
-  })
-  //const usercheck=result.find( ({ user }) => user === req.body.userid )
-  
-  console.log(result);
-}
-
 
 module.exports = {
   index,
@@ -240,8 +285,9 @@ module.exports = {
   destroy,
   addComment,
   addLike,
-  checkUserLiked,
-  checkMatchingid,
+  checkUserLikedOrDisliked,
   getPostByPage,
-  addDislike
+  addDislike,
+  getPostById,
+  userCreatedPosts
 };
