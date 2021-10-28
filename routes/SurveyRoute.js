@@ -33,7 +33,7 @@ router.post('/researchAnswer/',(req, res) => {
 
 
 router.post('/deleteById/',(req, res) => {
-     // SurveyController.createSurvey(req, res);
+      SurveyController.deleteSurveyById(req, res);
 });
 
 router.post('/getSurveyById/',(req, res) => {

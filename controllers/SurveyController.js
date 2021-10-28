@@ -258,6 +258,22 @@ const getSurveyCreatedByUser = (req, res, next) => {
     });
 };
 
+const deleteSurveyById = (req, res, next) => {
+  var surveyId = req.body.surveyId;
+  SurveyModel.findByIdAndDelete(surveyId)
+    .then((response) => {
+      console.log(response);
+      res.send({
+        response,
+      });
+    })
+    .catch((error) => {
+      res.json({
+        message: "An error Occured",
+      });
+    });
+};
+
 module.exports = {
   index,
   createSurvey,
@@ -267,4 +283,5 @@ module.exports = {
   researchAnswer,
   getSurveyById,
   getSurveyCreatedByUser,
+  deleteSurveyById
 };
